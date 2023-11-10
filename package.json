@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "inquirer": "9.2.11",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "1.4.10"
   },
   "name": "recursion",
   "version": "1.0.0",
