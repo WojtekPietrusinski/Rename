@@ -1,4 +1,4 @@
-import { readdirSync, copyFileSync, existsSync, mkdirSync, renameSync} from 'fs';
+import { readdirSync, copyFileSync, existsSync, mkdirSync, renameSync } from 'fs';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { homedir } from 'os';
