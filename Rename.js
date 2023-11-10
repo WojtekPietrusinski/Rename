@@ -1,8 +1,6 @@
-import { readdirSync, copyFileSync, existsSync, mkdirSync, renameSync } from 'fs';
+import { readdirSync, existsSync, mkdirSync, renameSync, rmdirSync } from 'fs';
 import { join } from 'path';
-import { spawnSync } from 'child_process';
 import { homedir } from 'os';
-// import readlineSync from './node_modules/readline-sync/lib/readline-sync.js';
 import readlineSync from 'readline-sync';
 
 const desktopPath = join(homedir(), 'Desktop');
@@ -43,13 +41,17 @@ function listFilesAndFolders(basePath) {
   
         renameSync(selectedItemPath, newFilePath);
       } else {
+
         const newFolderPath = join(changedFilesPath, `${selectedItem}1`);
-        //newFolderPath?
+        
         mkdirSync(newFolderPath);
-  
-         moveContentsRecursively(selectedItemPath, newFolderPath);
-         //sprawdzić renameSync()
-    
+        moveContentsRecursively(selectedItemPath, newFolderPath);
+
+        if (readdirSync(selectedItemPath).length === 0) {
+          rmdirSync(selectedItemPath);
+        }
+
+
       }
     } else {
       console.log('Plik lub folder nie istnieje.');
@@ -60,10 +62,17 @@ function listFilesAndFolders(basePath) {
     
   function moveContentsRecursively(src, dest) {
       const items = readdirSync(src);
+
+      console.log(items);
     
       items.forEach((item) => {
+
+        const fileExtension = item.split('.').pop();
+        const fileNameWithoutExtension = item.slice(0, -fileExtension.length - 1);
+
+        const newFileName = `${fileNameWithoutExtension}1.${fileExtension}`; 
         const srcItemPath = join(src, item);
-        const destItemPath = join(dest, item);
+        const destItemPath =  join(dest, newFileName);
     
         if (existsSync(srcItemPath)) {
           if (existsSync(destItemPath)) {
